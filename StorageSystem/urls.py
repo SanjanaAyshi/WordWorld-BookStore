@@ -1,22 +1,31 @@
-"""
-URL configuration for StorageSystem project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+@api_view(['GET'])
+def api_root(request):
+    return Response({
+        'clients': request.build_absolute_uri('/api/clients/'),
+        'categories': request.build_absolute_uri('/api/catalog/categories/'),
+        'publications': request.build_absolute_uri('/api/catalog/publications/'),
+        'authors': request.build_absolute_uri('/api/catalog/authors/'),
+        'books': request.build_absolute_uri('/api/catalog/books/'),
+        'carts': request.build_absolute_uri('/api/cart/carts/'),
+        'cart-items': request.build_absolute_uri('/api/cart/cart-items/'),
+        'orders': request.build_absolute_uri('/api/order/orders/'),
+        'order-items': request.build_absolute_uri('/api/order/order-items/'),
+        'payments': request.build_absolute_uri('/api/payment/payments/'),
+        'reviews': request.build_absolute_uri('/api/reviews/reviews/'),
+    })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', api_root, name='api-root'),
+    path('api/clients/', include('client.urls')),
+    path('api/catalog/', include('catalog.urls')),
+    path('api/cart/', include('cart.urls')),
+    path('api/order/', include('order.urls')),
+    path('api/payment/', include('payment.urls')),
+    path('api/reviews/', include('reviews.urls')),
 ]
