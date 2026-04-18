@@ -6,7 +6,8 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     list_display=('id', 'client', 'created_at')
 
 class CartItemAdmin(admin.ModelAdmin):
-    list_display=('id', 'cart', 'book', 'quantity')
+    list_display = ('id', 'cart', 'book', 'quantity')
+    list_select_related = ('cart', 'book')
 
 # Register your models here.
 admin.site.register(ShoppingCart,ShoppingCartAdmin)
